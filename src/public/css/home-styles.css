@@ -1,0 +1,321 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    padding: 0;
+    margin: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: #d4f3e9;
+    background: linear-gradient(180deg, rgba(46, 159, 152, 0.0715151) 29.17%, rgba(0, 0, 0, 0) 31.5%, rgba(64, 222, 213, 0.1) 40.17%);
+}
+.book-container #contactButton {
+    width: 164px;
+    height: 52px;
+    top: 7px;
+    left: 1250px;
+    color: #d20000;
+    font-size: 20px;
+    background-color: #fff;
+    border-radius: 34px;
+    border: 2px solid #d20000;
+    opacity: 0px;
+    cursor: pointer;
+}
+
+.book-container #contactButton:hover {
+    background-color: #d20000;
+    color: #fff;
+    transition: background-color 0.3s;
+}
+
+#header {
+    margin: 12px 0;
+    background-color: #fff;
+    height: 66px;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+.book-container .book-content {
+    position: relative;
+    height: 1022px;
+    width: 100%;
+    background: url(../img/hotel.jpg) top center / cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.book-container .book-content h1 {
+    position: relative;
+    bottom: 30%;
+    font-weight: 400;
+    font-size: 64px;
+    text-shadow: 10px 10px 4px rgba(0, 0, 0, 0.4);
+    color: #d20000;
+}
+.location-container {
+    position: absolute;
+    display: inline-block;
+    width: 70%;
+    height: 125px;
+    background-color: rgba(255, 255, 255, 0.75);
+    top: 64%;
+    text-align: center;
+    line-height: 120px;
+}
+.location-container ul {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.location-container li {
+    display: inline-block;
+    list-style-type: none;
+    margin: 0 46px;
+}
+.location-container li label{
+    display: grid;
+    columns: 1;
+    align-items: center;
+    justify-items: start;
+    text-decoration: none;
+    color: #000;
+    padding: 4px 36px;
+    border: 1px solid #000;
+    border-radius: 3px;
+    font-size: 18px;
+}
+.location {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+input[type="datetime-local"] {
+    margin: 10px 0;
+    /* padding: 0; */
+    font-size: 16px;
+    line-height: 22px;
+    border: none;
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0);
+    color: #000;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input[type="datetime-local"]:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 4px #007bff;
+}
+
+input[type="datetime-local"]::placeholder {
+    color: #aaa;
+}
+
+input[type="datetime-local"]:hover {
+    border-color: #0056b3;
+}
+#search-btn{
+    background-color: #d20000;
+    width: 131px;
+    height: 46px;
+    border-radius: 3px;
+    border: 0.5px solid #d20000;
+    font-size: 16px;
+    line-height: 46px;
+}
+.datetime {
+    line-height: 20px;
+    height: 12px;
+}
+
+#address {
+    margin: 60px 40px 16px;
+}
+
+#address-content {
+    display: flex;
+    font-size: 22px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#address-content p {
+    margin: 0 8px;
+}
+
+#address h1 {
+    font-weight: 500;
+    font-size: 46px;
+    text-shadow: 20px 13px 7px rgba(3, 3, 3, 0.4);
+    color: #d20000;
+    margin-bottom: 12px;
+}
+
+#line-1 {
+    border: none; 
+    height: 0.5px;  
+    background-color: #000; 
+    width: 95%; 
+    margin: 20px auto; 
+}
+
+#services{
+    margin: 24px 40px 108px;
+}
+
+#ls-room {
+    margin: 24px 40px 50px;
+}
+
+#services h1, #ls-room h1 {
+    font-weight: 500;
+    font-size: 32px;
+    text-shadow: 20px 13px 7px rgba(3, 3, 3, 0.4);
+    color: #d20000;
+    margin-bottom: 12px;
+}
+
+#ls-services {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    width: 40%;
+    height: 100px;
+}
+
+#ls-services .services-item {
+    font-size: 24px;
+    font-family: 'Dm Sans', Courier, monospace;
+    display: flex;
+    width: 150px;
+    gap: 16px;
+    justify-content: center;
+    align-items: center
+}
+
+#ls-services .services-item p {
+    width: fit-content;
+}
+
+#ls-services .services-item i {
+    font-size: 40px;
+}
+
+#line-2 {
+    border: none; 
+    height: 2px;  
+    background-color: #000; 
+    width: 95%; 
+    margin: 20px auto; 
+}
+
+.row {
+    margin: 0 28px;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .room {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+
+  .carousel-item {
+    padding: 20px;
+  }
+  
+  .carousel-inner img {
+    width: 100%;
+    height: 500px; 
+    object-fit: cover;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+  
+  .room-info {
+    padding: 15px;
+  }
+  
+  .room-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .room-details {
+    list-style-type: none;
+    padding-left: 0;
+    margin-bottom: 15px;
+  }
+  
+  .room-details li {
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+    color: #555;
+  }
+  
+  .room-details i {
+    margin-right: 8px;
+  }
+  
+  .room-price-and-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; 
+  }
+  
+  .room-price {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #000;
+    margin-bottom: 10px;
+    margin-right: 20px;
+  }
+  
+  .btn {
+    border:2px solid #ff3f09;
+    color: #000;
+    background-color: #fff;
+    text-align: center;
+    font-size: 1rem;
+    padding: 10px 20px; /* Điều chỉnh chiều rộng nút */
+    width: 140px; /* Chiều rộng nút */
+    transition: background-color 0.3s;
+  }
+  
+  .btn:hover {
+    background-color: #d20000;
+    border:2px solid #d20000;
+    color: #fff;
+  }
+  
+  .col-md-6 {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .room-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+
+@media (min-width: 1200px) {
+    .container {
+        max-width: 100%;
+    }
+}

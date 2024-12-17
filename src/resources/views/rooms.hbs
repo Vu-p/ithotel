@@ -1,0 +1,221 @@
+<div class="container">
+  <header id="header">
+    <nav>
+      <button id="contactButton">LIÊN HỆ</button>
+    </nav>
+  </header>
+  <div class="book-content">
+    <h1>IT HOTEL</h1>
+    <div class="location-container">
+      <div class="location">
+        <ul>
+          <li>
+            <label>
+              <span class="datetime">Ngày giờ check-in</span>
+              <input type="datetime-local" id="check-in-datetime" name="datetime" /></label>
+          </li>
+          <li>
+            <label><span class="datetime">Ngày giờ check-out</span><input type="datetime-local" id="check-out-datetime"
+                name="datetime" />
+            </label>
+          </li>
+          <li>
+            <button id="search-btn">Tìm phòng</button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div id="address">
+    <h1>IT HOTEL</h1>
+    <div id="address-content">
+      <i class="fas fa-map-marker-alt"></i>
+      <p>75 Phan Văn Định , Hòa Khánh Nam , Liên Chiểu , Đà Nẵng</p>
+    </div>
+  </div>
+  <div id="line-1">
+    <hr />
+  </div>
+  <div id="services">
+    <h1>DỊCH VỤ</h1>
+    <div id="ls-services">
+      <div class="services-item" id="swim">
+        <i class="uil uil-swimmer"></i>
+        <p>POOL</p>
+      </div>
+      <div class="services-item" id="wifi">
+        <i class="uil uil-wifi"></i>
+        <p>WIFI FREE</p>
+      </div>
+      <div class="services-item" id="breakfast">
+        <i class="uil uil-restaurant"></i>
+        <p>AMAZING BREAKFAST</p>
+      </div>
+      <div class="services-item" id="bar">
+        <i class="uil uil-glass-martini"></i>
+        <p>BAR</p>
+      </div>
+      <div class="services-item" id="family">
+        <i class="uil uil-home"></i>
+        <p>FAMILY ROOM</p>
+      </div>
+    </div>
+  </div>
+  <div id="line-2">
+    <hr />
+  </div>
+  <div id="ls-room">
+    <h1>List Phòng</h1>
+  </div>
+  <div class="row">
+    {{#each rooms}}
+    <div class="col-md-6 mb-4">
+      <div class="room">
+        <!-- Slider -->
+        <div id="carousel-{{room_num}}" class="carousel slide" data-ride="carousel">
+          <div class="carousel-inner">
+            {{#each image}}
+            <div class="carousel-item {{#if @first}}active{{/if}}">
+              <img src="{{this}}" class="d-block w-100" alt="Room Image">
+            </div>
+            {{/each}}
+          </div>
+          <a class="carousel-control-prev" href="#carousel-{{room_num}}" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="carousel-control-next" href="#carousel-{{room_num}}" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
+        </div>
+
+        <!-- Room Information (Static content) -->
+        <div class="room-info">
+          <h5 class="room-title">PHÒNG VIP</h5>
+          <ul class="room-details">
+            <li><i class="fas fa-bed"></i> 1 giường lớn</li>
+            <li><i class="fas fa-sun"></i> View hướng ra biển</li>
+            <li><i class="fas fa-balance-scale"></i> Ban công</li>
+          </ul>
+          <div class="room-price-and-btn">
+            <div class="room-price">
+              <span>{{this.price}} VND</span>
+            </div>
+            <a href="#" class="btn btn-primary" id="choose-room-{{this._id}}">Chọn phòng</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {{/each}}
+  </div>
+</div>
+<script>
+  document.getElementById('search-btn').addEventListener('click', async () => {
+    const checkIn = document.getElementById('check-in-datetime').value;
+    const checkOut = document.getElementById('check-out-datetime').value;
+
+    if (!checkIn || !checkOut) {
+      alert('Vui lòng chọn ngày giờ check-in và check-out');
+      return;
+    }
+
+    try {
+      // Gửi yêu cầu tới API
+      const response = await fetch('/api/available-rooms', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ checkIn, checkOut }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch available rooms');
+      }
+
+      const data = await response.json();
+
+      // Hiển thị danh sách phòng trống
+      renderRooms(data.rooms);
+    } catch (error) {
+      console.error('Error fetching rooms:', error);
+      alert('Có lỗi xảy ra khi tìm kiếm phòng.');
+    }
+  });
+
+  function renderRooms(rooms) {
+    const roomsContainer = document.querySelector('.row');
+    roomsContainer.innerHTML = ''; // Xóa danh sách phòng cũ
+
+    if (rooms.length === 0) {
+      roomsContainer.innerHTML = '<p>Không có phòng trống trong khoảng thời gian này.</p>';
+      return;
+    }
+
+    rooms.forEach((room) => {
+      const roomHtml = `
+      <div class="col-md-6 mb-4">
+        <div class="room">
+          <div id="carousel-${room._id}" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+              ${room.image
+          .map((img, index) => `
+                  <div class="carousel-item ${index === 0 ? 'active' : ''}">
+                    <img src="${img}" class="d-block w-100" alt="Room Image">
+                  </div>
+                `)
+          .join('')}
+            </div>
+            <a class="carousel-control-prev" href="#carousel-${room._id}" role="button" data-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carousel-${room._id}" role="button" data-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="sr-only">Next</span>
+            </a>
+          </div>
+          <div class="room-info">
+            <h5 class="room-title">Phòng VIP</h5>
+            <ul class="room-details">
+              <li><i class="fas fa-bed"></i> 1 giường lớn</li>
+              <li><i class="fas fa-sun"></i> View hướng ra biển</li>
+              <li><i class="fas fa-balance-scale"></i> Ban công</li>
+            </ul>
+            <div class="room-price-and-btn">
+              <div class="room-price">
+                <span>${room.price} VND</span>
+              </div>
+              <a href="" class="btn btn-primary choose-room-btn" data-room-id="${room._id}">Chọn phòng</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+      roomsContainer.insertAdjacentHTML('beforeend', roomHtml);
+    });
+
+    attachChooseRoomEvents();
+  }
+  function attachChooseRoomEvents() {
+    const buttons = document.querySelectorAll('.choose-room-btn');
+
+    buttons.forEach((button) => {
+      button.addEventListener('click', function (event) {
+        event.preventDefault(); // Ngăn hành động mặc định
+
+        const roomId = this.dataset.roomId; // Lấy roomId từ thuộc tính data-room-id
+        const checkIn = encodeURIComponent(document.getElementById('check-in-datetime').value);
+        const checkOut = encodeURIComponent(document.getElementById('check-out-datetime').value);
+
+        if (!roomId || !checkIn || !checkOut) {
+          alert('Vui lòng chọn đầy đủ thông tin trước khi chọn phòng.');
+          return;
+        }
+
+        // Điều hướng đến route `/:id` với các tham số
+        const url = `/${roomId}?checkIn=${checkIn}&checkOut=${checkOut}`;
+        window.location.href = url;
+      });
+    });
+  }
+</script>

@@ -1,0 +1,142 @@
+<header>
+  <h1 class="namehotel">IT HOTEL</h1>
+  <button class="call" type="button">LIÊN HỆ</button>
+</header>
+
+<main>
+  <!-- Phần hình ảnh và thông tin phòng -->
+  <div class="rooms">
+    <div class="room-image">
+      <img src="{{getFirstImage room.image}}" alt="Phòng VIP" />
+    </div>
+  </div>
+  <div class="room-details">
+    <h2 class="nameroom">PHÒNG VIP</h2>
+    <p>Địa chỉ: 75 Phan Văn Định, Hoa Khánh Nam, Liên Chiểu, Đà Nẵng</p>
+  </div>
+  <hr />
+
+  <!-- Phần text box và form đặt phòng -->
+  <div class="form-container">
+    <!-- Text box -->
+    <div class="room-textbox">
+      <img src="{{getFirstImage room.image}}" alt="Thông tin phòng" />
+      <p>- 1 giường lớn</p>
+      <p>- View hướng ra biển</p>
+      <p>- Ban công</p>
+    </div>
+
+    <!-- Form đặt phòng -->
+    <div class="booking-form">
+      <h3>THÔNG TIN ĐẶT PHÒNG CỦA BẠN</h3>
+      <form id="customer-form">
+        <label for="phone">Số điện thoại:</label>
+        <input type="tel" id="phone" name="phone" placeholder="Nhập số điện thoại" />
+
+        <label for="name">Tên khách:</label>
+        <input type="text" id="name" name="name" placeholder="Nhập tên khách" />
+      </form>
+    </div>
+  </div>
+</main>
+<div class="reservation-container">
+  <!-- Khung Thông Tin Thanh Toán -->
+  <div class="payment-container">
+    <h4>Bạn có thể thanh toán bằng</h4>
+    <div class="payment-option">
+      <input type="radio" id="pay-on-arrival" name="payment" checked />
+      <label for="pay-on-arrival">
+        <span class="icon-wallet"><img src="/img/cash.png" alt="" /></span>
+        Thanh toán khi nhận phòng
+      </label>
+    </div>
+  </div>
+
+  <!-- Khung Chi Tiết Đặt Phòng -->
+  <div class="details-container">
+    <h4>Chi tiết đặt phòng của bạn</h4>
+    <p>Check-in: </p>
+    <p>Check-out: </p>
+    <p>Phòng VIP: {{room.price}}</p>
+  </div>
+
+  <!-- Khung Xác Nhận -->
+  <div class="confirmation-container">
+    <h4>Giá phòng</h4>
+    <div class="price-box">
+      <p>{{room.price}}</p>
+    </div>
+    <button id="confirm-button" class="confirm-button"><img src="/img/tick.png" alt="" />
+      Xác nhận đặt phòng</button>
+  </div>
+</div>
+
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const checkIn = urlParams.get('checkIn');
+  const checkOut = urlParams.get('checkOut');
+
+  // Kiểm tra xem có tồn tại checkIn và checkOut không
+  if (checkIn && checkOut) {
+
+    // Định dạng lại ngày theo định dạng dễ đọc
+    const formattedCheckIn = new Date(checkIn).toLocaleDateString('vi-VN', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+
+    const formattedCheckOut = new Date(checkOut).toLocaleDateString('vi-VN', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+
+    document.querySelector('.details-container p:nth-child(2)').textContent = `Check-in: ${formattedCheckIn}`;
+    document.querySelector('.details-container p:nth-child(3)').textContent = `Check-out: ${formattedCheckOut}`;
+  }
+
+  document.getElementById('confirm-button').addEventListener('click', function (event) {
+    event.preventDefault();
+
+    // Lấy thông tin từ form
+    const name = document.getElementById('name').value;
+    const phone = document.getElementById('phone').value;
+
+    // Lấy thông tin từ query params (checkIn, checkOut, roomId)
+    const urlParams = new URLSearchParams(window.location.search);
+    const pathname = window.location.pathname;
+    const checkIn = urlParams.get('checkIn');
+    const checkOut = urlParams.get('checkOut');
+    const roomId = pathname.split('/')[1];
+
+    // Gửi yêu cầu tới server để lưu thông tin khách và tạo order
+    fetch('/create-order', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name,
+        phone,
+        roomId,
+        checkIn,
+        checkOut
+      })
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          // Nếu tạo order thành công, hiển thị thông báo
+          alert('Đặt phòng thành công!');
+          window.location.href = '/'; // Điều hướng về trang chủ
+        } else {
+          alert('Đặt phòng thất bại');
+        }
+      })
+      .catch(error => {
+        console.error('Lỗi:', error);
+        alert('Có lỗi xảy ra khi đặt phòng.');
+      });
+  });
+</script>
